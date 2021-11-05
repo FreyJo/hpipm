@@ -168,7 +168,22 @@ void int_print_mat(int row, int col, int *A, int lda)
 	}
 #endif
 
-
+/* prints a matrix in column-major format (exponential notation) */
+static void d_print_exp_mat_to_file(char *file_name, char *mode, int m, int n, double *A, int lda)
+	{
+	FILE *file = fopen(file_name, mode);
+	int i, j;
+	for(i=0; i<m; i++)
+		{
+		for(j=0; j<n; j++)
+			{
+			fprintf(file, "%e\t", A[i+lda*j]);
+			}
+		fprintf(file, "\n");
+		}
+	fprintf(file, "\n");
+	fclose(file);
+	}
 
 /************************************************
 Mass-spring system: nx/2 masses connected each other with springs (in a row), and the first and the last one to walls. nu (<=nx) controls act on the first nu masses. The system is sampled with sampling time Ts.
@@ -402,14 +417,23 @@ int main()
 	for(ii=0; ii<nx_; ii++) qN[ii] += q[ii];
 #endif
 
-#if PRINT
-	d_print_mat(nx_, nx_, Q, nx_);
-	d_print_mat(nu_, nu_, R, nu_);
-	d_print_mat(nu_, nx_, S, nu_);
-	d_print_mat(1, nx_, q, 1);
-	d_print_mat(1, nu_, r, 1);
-//	d_print_mat(nx_, nx_, QN, nx_);
-//	d_print_mat(1, nx_, qN, 1);
+#if 1
+	char filename[100];
+	sprintf(filename, "A_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", nx_, nx_, A, nx_);
+	sprintf(filename, "B_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", nx_, nu_, B, nu_);
+	sprintf(filename, "x0_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", 1, nx_, x0, 1);
+	sprintf(filename, "b_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", 1, nx_, b, 1);
+
+	sprintf(filename, "Q_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", nx_, nx_, Q, nx_);
+	sprintf(filename, "R_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", nu_, nu_, R, nu_);
+	sprintf(filename, "S_nm%d.txt", nx_/2);
+	d_print_exp_mat_to_file(filename, "a", nu_, nx_, S, nu_);
 #endif
 
 /************************************************
