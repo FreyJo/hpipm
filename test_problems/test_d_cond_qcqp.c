@@ -174,11 +174,15 @@ int main()
 
 	hpipm_timer timer;
 
+	for (int nm=1; nm<=10; nm++)
+	{
+		printf("\nnm = %d\n", nm);
+
 /************************************************
 * problem size
 ************************************************/
 
-	int nx_ = 4; // number of states (it has to be even for the mass-spring system test problem)
+	int nx_ = 2*nm; // number of states (it has to be even for the mass-spring system test problem)
 	int nu_ = 1; // number of inputs (controllers) (it has to be at least 1 and at most nx/2 for the mass-spring system test problem)
 	int N  = 15; // horizon lenght
 
@@ -1107,6 +1111,7 @@ int main()
 	printf("\nalpha_aff\tmu_aff\t\tsigma\t\talpha_prim\talpha_dual\tmu\t\tres_stat\tres_eq\t\tres_ineq\tres_comp\tlq fact\t\titref pred\titref corr\tlin res stat\tlin res eq\tlin res ineq\tlin res comp\n");
 	d_print_exp_tran_mat(stat_m, iter+1, stat, stat_m);
 
+	printf("\nTIMINGS for nm=%d\n\n", nm);
 	printf("\nred eq dof all time = %e [s]\n", time_red_eq_dof_all);
 	printf("\nred eq dof lhs time = %e [s]\n", time_red_eq_dof_lhs);
 	printf("\nred eq dof rhs time = %e [s]\n", time_red_eq_dof_rhs);
@@ -1117,6 +1122,7 @@ int main()
 	printf("\nexpand time         = %e [s]\n", time_expa);
 	printf("\nres eq dof time     = %e [s]\n\n", time_res_eq_dof);
 	printf("\ntotal solution time = %e [s]\n\n", time_red_eq_dof_all+time_cond_all+time_dense_ipm+time_expa+time_res_eq_dof);
+	printf("\n---------------------------------------------------\n");
 #endif
 
 /************************************************
@@ -1211,6 +1217,7 @@ int main()
 	free(ocp_qp_red_arg_mem);
 	free(ocp_qp_red_work_mem);
 
+	}
 /************************************************
 * return
 ************************************************/

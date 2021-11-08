@@ -288,7 +288,6 @@ void mass_spring_system(double Ts, int nx, int nu, double *A, double *B, double 
 
 int main()
 	{
-
 	int ii, jj, kk, ll;
 
 	int hpipm_status; // 0 normal; 1 max iter; 2 min alpha; 3 NaN
@@ -297,11 +296,14 @@ int main()
 
 	hpipm_timer timer;
 
+	for (int nm=1; nm<=10; nm++)
+	{
+		printf("\nOCP QCQP test NO condensing MASSES nm = %d\n", nm);
 /************************************************
 * problem size
 ************************************************/
 
-	int nx_ = 6; // number of states (it has to be even for the mass-spring system test problem)
+	int nx_ = nm*2; // number of states (it has to be even for the mass-spring system test problem)
 	int nu_ = 1; // number of inputs (controllers) (it has to be at least 1 and at most nx/2 for the mass-spring system test problem)
 	int N  = 15; // horizon lenght
 
@@ -1153,11 +1155,12 @@ int main()
 	printf("\nipm iter = %d\n", iter);
 	printf("\nalpha_aff\tmu_aff\t\tsigma\t\talpha_prim\talpha_dual\tmu\t\tres_stat\tres_eq\t\tres_ineq\tres_comp\tlq fact\t\titref pred\titref corr\tlin res stat\tlin res eq\tlin res ineq\tlin res comp\n");
 	d_print_exp_tran_mat(stat_m, iter+1, stat, stat_m);
-
+	printf("\nTIMINGS for nm=%d\n\n", nx_/2);
 	printf("\nred eq for time     = %e [s]\n", time_red_eq_dof);
 	printf("\nocp ipm time        = %e [s]\n", time_ipm);
 	printf("\nres eq for time     = %e [s]\n\n", time_res_eq_dof);
 	printf("\ntotal solution time = %e [s]\n\n", time_red_eq_dof+time_ipm+time_res_eq_dof);
+	printf("\n---------------------------------------------------\n");
 #endif
 
 /************************************************
@@ -1246,7 +1249,7 @@ int main()
 	free(qcqp_sol_mem2);
 	free(qp_red_arg_mem);
 	free(qp_red_work_mem);
-
+	}
 /************************************************
 * return
 ************************************************/

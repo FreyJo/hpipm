@@ -61,6 +61,7 @@
 
 
 
+#define PRINT 1
 // printing
 #ifndef PRINT
 #define PRINT 1
@@ -195,7 +196,7 @@ int main()
 
 	int nbu[N+1];
 	for (ii=0; ii<=N; ii++)
-		nbu[ii] = 0;//nu[ii];
+		nbu[ii] = nu[ii];
 
 	int nbx[N+1];
 	nbx[0] = nx[0];
@@ -223,8 +224,8 @@ int main()
 
 	int nq[N+1];
 	for(ii=0; ii<N; ii++)
-		nq[ii] = 1;
-	nq[N] = 1;
+		nq[ii] = 0;
+	nq[N] = 0;
 
 	int nsbx[N+1];
 	for(ii=0; ii<=N; ii++)
