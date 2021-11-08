@@ -66,7 +66,8 @@
 // remove initial state x0 from optimization variables
 #define REMOVE_X0 1
 
-
+// Write problem data and solution to txt files
+#define WRITE_PROBLEM_DATA_TO_TXT
 
 #if ! defined(EXT_DEP)
 /* creates a zero matrix */
@@ -184,6 +185,18 @@ static void d_print_exp_mat_to_file(char *file_name, char *mode, int m, int n, d
 	fprintf(file, "\n");
 	fclose(file);
 	}
+/* prints a blasfeo vector in column-major format (exponential notation) */
+static void d_print_exp_dvec_to_file(char *file_name, char *mode, int n, struct blasfeo_dvec *A)
+	{
+	FILE *file = fopen(file_name, mode);
+	int j;
+	for(j=0; j<n; j++)
+		{
+		fprintf(file, "%e\t", BLASFEO_DVECEL(A, j));
+		}
+	fprintf(file, "\n");
+	fclose(file);
+	}
 
 /************************************************
 Mass-spring system: nx/2 masses connected each other with springs (in a row), and the first and the last one to walls. nu (<=nx) controls act on the first nu masses. The system is sampled with sampling time Ts.
@@ -288,7 +301,7 @@ int main()
 * problem size
 ************************************************/
 
-	int nx_ = 4; // number of states (it has to be even for the mass-spring system test problem)
+	int nx_ = 6; // number of states (it has to be even for the mass-spring system test problem)
 	int nu_ = 1; // number of inputs (controllers) (it has to be at least 1 and at most nx/2 for the mass-spring system test problem)
 	int N  = 15; // horizon lenght
 
@@ -417,7 +430,7 @@ int main()
 	for(ii=0; ii<nx_; ii++) qN[ii] += q[ii];
 #endif
 
-#if 1
+#if defined(WRITE_PROBLEM_DATA_TO_TXT)
 	char filename[100];
 	sprintf(filename, "A_nm%d.txt", nx_/2);
 	d_print_exp_mat_to_file(filename, "a", nx_, nx_, A, nx_);
@@ -1063,6 +1076,15 @@ int main()
 	
 #if PRINT
 	d_ocp_qcqp_sol_print(&dim, &qcqp_sol);
+#endif
+#if defined(WRITE_PROBLEM_DATA_TO_TXT)
+	for (ii = 0; ii <= N; ii++)
+	{
+		sprintf(filename, "uxs%d_nm%d.txt", ii, nx_/2);
+		d_print_exp_dvec_to_file(filename, "a", nx[ii] + nu[ii] + 2*ns[ii], qcqp_sol.ux+ii);
+	}
+	// sprintf(filename, "b_nm%d.txt", nx_/2);
+	// d_print_exp_mat_to_file(filename, "a", 1, nx_, b, 1);
 #endif
 
 	double *tmp_nx; d_zeros(&tmp_nx, nx_, 1);
