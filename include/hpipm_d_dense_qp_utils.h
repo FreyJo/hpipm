@@ -38,7 +38,7 @@
 
 
 
-#include <blasfeo_target.h>
+
 #include <blasfeo_common.h>
 
 #include "hpipm_d_dense_qp_dim.h"

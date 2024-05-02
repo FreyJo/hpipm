@@ -35,7 +35,7 @@
 
 
 
-#include <blasfeo_target.h>
+
 #include <blasfeo_common.h>
 
 #ifdef __cplusplus

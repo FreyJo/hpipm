@@ -49,7 +49,6 @@ extern "C" {
 #include <sys/time.h>
 #include <assert.h>
 // blasfeo
-#include <blasfeo_target.h>
 #include <blasfeo_common.h>
 #include <blasfeo_v_aux_ext_dep.h>
 #include <blasfeo_d_aux_ext_dep.h>
